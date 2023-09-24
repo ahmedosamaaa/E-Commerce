@@ -2,7 +2,7 @@ import { Router } from "express";
 import * as bc from "./Brands.controller.js";
 import { errorHandling } from "../../Utils/ErrorHandling.js";
 import { multerCloudFunction } from "../../Services/MulterCloud.js";
-import { allowedExtensions } from "../../Utils/allowedExtentions.js";
+import { allowedExtensions } from "../../Utils/allowExtentions.js";
 import { isAuth } from "../../MiddleWares/Auth.js";
 import { validationCoreFunction } from "../../MiddleWares/Validation.js";
 import * as validators from "./Brands.validationSchemas.js"

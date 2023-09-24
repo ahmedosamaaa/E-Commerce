@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as sc from "../SubCategories/subCategory.controller.js";
 import { multerCloudFunction } from "../../Services/MulterCloud.js";
-import { allowedExtensions } from "../../Utils/allowedExtentions.js";
+import { allowedExtensions } from "../../Utils/allowExtentions.js";
 import { validationCoreFunction } from "../../MiddleWares/Validation.js";
 // import brandRouter from "../Brands/Brands.routes.js";
 import * as validators from "./subCategory.validationSchemas.js";

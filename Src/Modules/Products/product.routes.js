@@ -3,7 +3,7 @@ const router = Router();
 import * as pc from "./Product.controller.js";
 import { errorHandling } from "../../Utils/ErrorHandling.js";
 import { multerCloudFunction } from "../../Services/MulterCloud.js";
-import { allowedExtensions } from "../../Utils/allowedExtentions.js";
+import { allowedExtensions } from "../../Utils/allowExtentions.js";
 import * as validators from "../Products/product.validationSchemas.js"
 import { validationCoreFunction } from "../../MiddleWares/Validation.js";
 import { isAuth } from "../../MiddleWares/Auth.js";

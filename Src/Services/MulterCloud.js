@@ -1,5 +1,5 @@
 import multer from "multer";
-import { allowedExtensions } from "../Utils/allowedExtentions.js";
+import { allowedExtensions } from "../Utils/allowExtentions.js";
 
 export const multerCloudFunction = (allowedExtensionsArr) => {
 
