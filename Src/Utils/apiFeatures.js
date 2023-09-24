@@ -1,4 +1,4 @@
-import { paginatinFunction } from "./paginatin.js";
+import { paginationFunction } from "./Pagination.js";
 
 export class ApiFeatures {
   constructor(mongooseQuery, queryData) {
@@ -9,7 +9,7 @@ export class ApiFeatures {
   //pagination
   pagination() {
     const { pageNumber, size } = this.queryData;
-    const { limit, skip, page } = paginatinFunction(pageNumber, size);
+    const { limit, skip, page } = paginationFunction(pageNumber, size);
     this.mongooseQuery.limit(limit).skip(skip);
     this.page = page
     return this;

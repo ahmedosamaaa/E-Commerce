@@ -1,4 +1,4 @@
-export const paginatinFunction = ( page = 1 , size = 2  ) => {
+export const paginationFunction = ( page = 1 , size = 2  ) => {
   page = page *1 || 1;
   if (page < 1) page = 1;
   if (size < 1) size = 2;

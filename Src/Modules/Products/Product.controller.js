@@ -5,7 +5,7 @@ import { subCategoryModel } from "../../../DB/Models/SubCategoryModel.js";
 import cloudinary from "../../Utils/CloudinaryConfig.js";
 import { customAlphabet } from "nanoid";
 import { productModel } from "../../../DB/Models/ProductModel.js";
-import { paginatinFunction } from "../../Utils/paginatin.js";
+import { paginationFunction } from "../../Utils/Pagination.js";
 import { ApiFeatures } from "../../Utils/apiFeatures.js";
 const nanoid = customAlphabet("123456_=!ascbhdtel", 5);
 
@@ -259,7 +259,7 @@ export const deleteProduct = async (req, res, next) => {
 // // ======================getProductsPaginated==================
 // export const listProduct = async (req, res, next) => {
 //   const { pageNumber, size } = req.query;
-//   const { limit, skip, page } = paginatinFunction(pageNumber, size);
+//   const { limit, skip, page } = paginationFunction(pageNumber, size);
 //   const products = await productModel.find().limit(limit).skip(skip);
 //   res.status(200).json({ message: "done", page, products });
 // };
@@ -267,7 +267,7 @@ export const deleteProduct = async (req, res, next) => {
 //====================searchProduct=========================
 export const searchProduct = async (req, res, next) => {
   const { keyword, page, size } = req.query;
-  const { limit, skip } = paginatinFunction({ page, size });
+  const { limit, skip } = paginationFunction({ page, size });
   const product = await productModel
     .find({
       $or: [
