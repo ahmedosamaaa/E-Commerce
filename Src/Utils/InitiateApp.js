@@ -9,7 +9,7 @@ export const initiateApp = (app, express) => {
   app.use(express.json());
   connectionDB();
   app.use(cors()); //allow anyOne
-  app.use("/", (req, res, next) => {
+  app.get("/", (req, res, next) => {
     res.json({ message: "Hello Osama" });
   });
 
