@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { multerCloudFunction } from "../../Services/MulterCloud.js";
-import { allowedExtensions } from "../../Utils/allowedExtentions.js";
+import { allowedExtensions } from "../../Utils/AllowedExtentions.js";
 import { errorHandling } from "../../Utils/ErrorHandling.js";
 import * as cc from "./Category.controller.js";
 import { validationCoreFunction } from "../../MiddleWares/Validation.js";
