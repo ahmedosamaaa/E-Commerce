@@ -1,7 +1,7 @@
 import { connectionDB } from "../../DB/Connection.js";
 import { globalResponse } from "./ErrorHandling.js";
 import * as routers from "../Modules/IndexRoutes.js";
-import { changeCouponStatusCron } from "./crons.js";
+// import { changeCouponStatusCron } from "./crons.js";
 import cors from 'cors'
 
 export const initiateApp = (app, express) => {
@@ -26,6 +26,6 @@ export const initiateApp = (app, express) => {
   });
 
   app.use(globalResponse);
-  changeCouponStatusCron();
+  // changeCouponStatusCron();
   app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 };
