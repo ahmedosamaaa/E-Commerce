@@ -3,13 +3,14 @@ import { gerenralFields } from "../../MiddleWares/Validation.js";
 export const signUpSchema = {
   body: joi
     .object({
-      username: joi.string().min(3).max(10).required(),
+      userName: joi.string().min(3).max(10).required(),
       email: gerenralFields.email,
       password: gerenralFields.password,
       cPassword: joi.valid(joi.ref("password")).required(),
-      status : joi.required(),
       gender: joi.required(),
-      age: joi.required()
+      age: joi.required(),
+      phoneNumber: joi.string().min(9).max(12).required(),
+      address: joi.required()
     })
     .required(),
 };

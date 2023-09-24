@@ -53,14 +53,14 @@ const userSchema = new Schema ({
 
     status: {
         type: String,
-        enum: [ 'Online', 'Offline' ],
         default: 'Offline',
+        enum: [ 'Online', 'Offline' ],
     },
 
     gender: {
         type: String,
-        enum: [ 'male', 'female', 'Not specified' ],
         default: 'Not specified',
+        enum: [ 'male', 'female', 'Not specified' ],
     },
 
     age: Number,
