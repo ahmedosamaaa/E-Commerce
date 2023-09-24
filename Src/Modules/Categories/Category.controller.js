@@ -140,7 +140,7 @@ export const deleteCategory = async (req, res, next) => {
 //=============== get all categories ======================
 export const getAllCategories = async (req, res, next) => {
   const Categories = await categoryModel.find();
-  res.status(200).json({ message: "Updated Done", Categories });
+  res.status(200).json({ message: "Done", Categories });
 };
 
 //================== get all categories with subCategory ======================

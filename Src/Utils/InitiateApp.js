@@ -9,6 +9,9 @@ export const initiateApp = (app, express) => {
   app.use(express.json());
   connectionDB();
   app.use(cors()); //allow anyOne
+  app.use("/", (req, res, next) => {
+    res.json({ message: "Hello Osama" });
+  });
 
   app.use("/category", routers.categoryRouter);
   app.use("/subCategory", routers.subCategoryRouter);

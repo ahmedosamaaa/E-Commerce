@@ -3,7 +3,7 @@ import { couponModel } from "../../DB/Models/CouponModel.js";
 import moment from "moment-timezone";
 
 export const changeCouponStatusCron = () => {
-    scheduleJob('* * * * * 1', async function(){
+    scheduleJob('1 12 1 * 1', async function(){
         const validCoupons = await couponModel.find({couponStatus: "Valid"})
         console.log(validCoupons);
         console.log("ana ashtghlt");
