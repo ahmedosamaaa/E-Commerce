@@ -5,11 +5,11 @@ import { gerenralFields } from "../../MiddleWares/Validation.js";
 //========= createOrder =========
 export const createOrderSchema = {
     body: joi.object({
-        couponCode: joi.string().lowercase().min(5).max(55).required(),
+        couponCode: joi.string().lowercase().min(5).max(55).optional(),
         productId: gerenralFields._id.required(),
         quantity: joi.number().required(),
         address: joi.required(),
-        // phoneNumbers: joi.string().min(10).max(15).required(),
+        phoneNumbers: joi.required(),
         paymentMethod: joi.string().valid('card','cash').required(),
     }),    
     
@@ -17,9 +17,9 @@ export const createOrderSchema = {
 //========= cartToOrder =========
 export const cartToOrderSchema = {
     body: joi.object({
-        couponCode: joi.string().lowercase().min(5).max(55).required(),
+        couponCode: joi.string().lowercase().min(5).max(55).optional(),
         address: joi.required(),
-        // phoneNumbers: joi.string().min(10).max(15).required(),
+        phoneNumbers: joi.required(),
         paymentMethod: joi.string().valid('card','cash').required(),
     }),
     query: joi.object({

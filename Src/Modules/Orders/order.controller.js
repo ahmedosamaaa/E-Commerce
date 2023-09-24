@@ -6,6 +6,7 @@ import { productModel } from "../../../DB/Models/ProductModel.js"
 import { isCouponValid } from "../../Utils/couponValidation.js"
 import createInvoice from "../../Utils/pdfkit.js"
 import { sendEmailService } from "../../Services/SendEmailService.js"
+import { qrCodeResult } from "../../Utils/qrCode.js"
 
 
 // ============createOrder===========
@@ -131,7 +132,8 @@ export const createOrder = async(req,res,next) => {
             }
         ]
     })
-    return res.status(200).json({ Message: "Done", orderDB });
+    const orderQr = await qrCodeResult({data:{orderId:orderDB._id , products:orderDB.products}})
+    return res.status(200).json({ Message: "Done", orderDB,orderQr });
 
 } 
 
@@ -231,7 +233,9 @@ export const cartToOrder = async (req,res,next) => {
     //remove product from card if exist
     cart.products = [];
     await cart.save();
-        //==================== invice ==================
+    //================ QRCode ===================
+    const orderQr = await qrCodeResult({data:{orderId:orderDB._id , products:orderDB.products}})
+    //==================== invice ==================
     const orderCode = `${req.authUser.userName}_${nanoid(3)}`
     const orderInvice = {
         orderCode,
@@ -248,5 +252,5 @@ export const cartToOrder = async (req,res,next) => {
         paidAmount: orderDB.paidAmount,
     }
     await createInvoice(orderInvice,`${orderCode}.pdf`)
-    return res.status(200).json({ Message: "Done", orderDB, cart });
+    return res.status(200).json({ Message: "Done", orderDB, orderQr });
 }
