@@ -11,7 +11,7 @@ export const createCouponSchema = {
         toDate: joi.date().greater(joi.ref('fromDate')),
         isPercentage: joi.boolean().optional(),
         isFixedAmount: joi.boolean().optional(),
-        couponAssginedToUsers: joi.array().items().required(),
+        couponAssginedToUsers: joi.array().items().optional(),
     })
 }
 

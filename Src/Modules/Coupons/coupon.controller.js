@@ -27,17 +27,19 @@ export const createCoupon = async (req,res,next) => {
         )
     }
     //assign to users
-    let userIds = [];
-    for (const user of couponAssginedToUsers) {
-        userIds.push(user.userId);
-    }
-    const userCheck = await userModel.find({
-        _id: { $in: userIds }
-    })
-    if(userCheck.length != userIds.length){
-        return next(
-            new Error('invalid users ids', {cause: 400,}),
-        )
+    if(couponAssginedToUsers){
+        let userIds = [];
+        for (const user of couponAssginedToUsers) {
+            userIds.push(user.userId);
+        }
+        const userCheck = await userModel.find({
+            _id: { $in: userIds }
+        })
+        if(userCheck.length != userIds.length){
+            return next(
+                new Error('invalid users ids', {cause: 400,}),
+            )
+        }
     }
     const couponObject = {
         couponCode,

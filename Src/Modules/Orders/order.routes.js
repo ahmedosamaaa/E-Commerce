@@ -20,4 +20,8 @@ router.post(
     errorHandling(oc.cartToOrder),
 )
 
+router.get(
+    "successOrder",
+    errorHandling(oc.successPayment),
+)
 export default router
