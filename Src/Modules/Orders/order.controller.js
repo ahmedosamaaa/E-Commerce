@@ -114,7 +114,7 @@ export const createOrder = async(req,res,next) => {
             customer_email: req.authUser.email,
             metadata: { orderId: orderDB._id.toString() },
             success_url: `${req.protocol}://${req.headers.host}/order/successOrder?token=${token}`,
-            cancel_url: `${req.protocol}://${req.headers.host}/order/successOrder?token=${token}`,
+            cancel_url: `${req.protocol}://${req.headers.host}/order/cancelOrder?token=${token}`,
             line_items: orderDB.products.map((ele)=>{
                 return {
                     price_data :{
