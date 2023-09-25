@@ -14,7 +14,7 @@ export const createOrderSchema = {
     }),    
     
 }
-//========= cartToOrder =========
+//========= cartToOrder ========
 export const cartToOrderSchema = {
     body: joi.object({
         couponCode: joi.string().lowercase().min(5).max(55).optional(),
