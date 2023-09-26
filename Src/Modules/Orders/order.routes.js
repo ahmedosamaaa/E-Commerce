@@ -21,7 +21,16 @@ router.post(
 )
 
 router.get(
-    "successOrder",
+    "/successOrder",
     errorHandling(oc.successPayment),
+)
+router.get(
+    "/cancelOrder",
+    errorHandling(oc.cancelPayment),
+)
+router.post(
+    "/orderDelivered",
+    isAuth(orderApisRoles.ORDER_DELIVERED),
+    errorHandling(oc.orderDelivered),
 )
 export default router

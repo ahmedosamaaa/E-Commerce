@@ -22,6 +22,7 @@ export const initiateApp = (app, express) => {
   app.use("/auth",routers.authRouter);
   app.use("/cart",routers.cartRouter);
   app.use("/order",routers.orderRouter);
+  app.use("/review",routers.reviewRouter);
 
 
   app.all("*", (req, res, next) => {

@@ -287,3 +287,17 @@ export const getProducts = async (req, res, next) => {
   const page = apiFeaturesInstance.page
   res.status(200).json({ message: "done",page, data });
 };
+
+
+// =====================getProductsWithReviews======================
+export const getProductsWithReviews = async (req, res, next) => {
+  const apiFeaturesInstance = new ApiFeatures(productModel.find(),req.query).pagination().sort().select().filter();
+  const data = await apiFeaturesInstance.mongooseQuery.populate(
+    [
+      {
+        path:'Reviews'
+      }
+    ]);
+  const page = apiFeaturesInstance.page
+  res.status(200).json({ message: "done",page, data });
+};

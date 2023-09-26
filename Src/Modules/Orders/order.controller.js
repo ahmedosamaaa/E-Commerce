@@ -55,11 +55,14 @@ export const createOrder = async(req,res,next) => {
     //paidAmount
     let paidAmount = 0;
     //percent
+    if (req.coupon?.isFixedAmount && req.coupon.isFixedAmount > isProductValid.price){
+        return next(new Error ('please selectt anther product',{cause: 400}))
+    }
     if(req.coupon?.isPercentage){
         paidAmount = subTotal * ( 1 - (req.coupon.couponAmount || 0 ) / 100);
     }
     //fixed
-    else if (req.coupon?.isFixedAmount){
+    else if (req.coupon?.isFixedAmount ){
         paidAmount = subTotal - req.coupon.couponAmount;
     }else{
         paidAmount = subTotal;
@@ -107,7 +110,8 @@ export const createOrder = async(req,res,next) => {
             }
             req.couponId = coupon.id
         }
-        const token = generateToken({ payload: { orderId: orderDB.orderId }, signature:process.env.ORDER_TOKEN, expiresIn:'1h' })
+        const token = generateToken({ payload: { orderId: orderDB._id }, signature:process.env.ORDER_TOKEN, expiresIn:'1h' })
+        console.log(`${req.protocol}://${req.headers.host}/order/successOrder?token=${token}`);
         orderSession = await paymentFunction ({
             payment_method_types:[orderDB.paymentMethod],
             mode: 'payment',
@@ -214,7 +218,9 @@ export const cartToOrder = async (req,res,next) => {
         req.coupon = coupon;
     }
     let subTotal = cart.subTotal
-
+    if (req.coupon?.isFixedAmount && req.coupon.isFixedAmount > isProductValid.price){
+        return next(new Error ('please selectt anther product',{cause: 400}))
+    }
     //paidAmount
     let paidAmount = 0;
     //percent
@@ -283,14 +289,15 @@ export const cartToOrder = async (req,res,next) => {
             }
             req.couponId = coupon.id
         }
-        const token = generateToken({ payload: { orderId: orderDB.orderId }, signature:process.env.ORDER_TOKEN, expiresIn:'1h' })
+        const token = generateToken({ payload: { orderId: orderDB._id }, signature:process.env.ORDER_TOKEN, expiresIn:'1h' })
+        console.log(`${req.protocol}://${req.headers.host}/order/successOrder?token=${token}`);
         orderSession = await paymentFunction({
             payment_method_types: [orderDB.paymentMethod],
             mode: 'payment',
             customer_email: req.authUser.email,
             metadata: { orderId: orderDB._id.toString() },
             success_url: `${req.protocol}://${req.headers.host}/order/successOrder?token=${token}`,
-            cancel_url: `${req.protocol}://${req.headers.host}/order/successOrder?token=${token}`,
+            cancel_url: `${req.protocol}://${req.headers.host}/order/cancelOrder?token=${token}`,
             line_items: orderDB.products.map((ele)=>{
                 return {
                     price_data :{
@@ -351,12 +358,70 @@ export const cartToOrder = async (req,res,next) => {
 //=============successPayment===================
 export const successPayment = async(req,res,next) => {
     const {token} = req.query
-    const decodedData = verifyToken({ token, signature:process.env.STRIPE_SECRET_KEY })
-    const order = await orderModel.findOne({ _id:decodedData.orderId,orderStatus:'pending' })
+    const decodedData = verifyToken({ token, signature:process.env.ORDER_TOKEN })
+    console.log(decodedData);
+    const order = await orderModel.findOne({ _id:decodedData.orderId, orderStatus:'pending' })
+    console.log(order);
     if(!order){
         return next (new Error('invalid order id', { cause: 400 }))
     }
-    order.orderStatus = 'confirmed',
-    await order.save(),
+    order.orderStatus = 'confirmed';
+    await order.save();
     res.status(200).json({message:'your order is confirmed', order})
+}
+
+//=============cancelPayment===================
+export const cancelPayment = async(req,res,next) => {
+    const {token} = req.query
+    const decodedData = verifyToken({ token, signature:process.env.ORDER_TOKEN })
+    console.log(decodedData);
+    const order = await orderModel.findOne({ _id:decodedData.orderId, orderStatus:'pending' })
+    console.log(order);
+    if(!order){
+        return next (new Error('invalid order id', { cause: 400 }))
+    }
+    order.orderStatus = 'canceled';
+    await order.save();
+
+    //======undoProducts===
+    for(const product of order.products) {
+        await productModel.findByIdAndUpdate(product.productId, {
+            $inc:{ stock: parseInt(product.quantity) }
+        })
+    }
+    //=====undoCoupons====
+    if(order.couponId){
+        const coupon = await couponModel.findById(order.couponId)
+        if(!coupon){
+        return next (new Error('invalid coupon', { cause: 400 }))
+        }
+        coupon.couponAssginedToUsers.map((ele)=>{
+            if(ele.userId.toString() == order.userId.toString() ){
+                ele.usageCount-=1
+            }
+        })
+        await coupon.save()
+    }
+    res.status(200).json({message:'your order is canceled',order})
+}
+
+//===============orderDelivered===========
+export const orderDelivered = async(req,res,next) => {
+    const { orderId } = req.query
+    const order = await orderModel.findOneAndUpdate(
+        {
+            _id:orderId ,
+            orderStatus: { $nin:['pending', 'delivered', 'canceled', 'rejected', ]}
+        },
+        {
+            orderStatus:'delivered'
+        },
+        {
+            new:true
+        }
+    )
+    if(!order){
+        return next (new Error('invalid Order',{cause: 400}));
+    }
+    res.status(200).json({ message:'Done', order })
 }

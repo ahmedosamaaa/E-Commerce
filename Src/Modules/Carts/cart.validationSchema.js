@@ -6,8 +6,6 @@ import { gerenralFields } from "../../MiddleWares/Validation.js";
 export const addToCartSchema = {
     body: joi.object({
         quantity: joi.number().required(),
-    }),
-    query: joi.object({
         productId: gerenralFields._id,
     })   
 }
@@ -19,7 +17,7 @@ export const deleteFromCartSchema = {
 }
 //========= deleteCart =========
 export const deleteCartSchema = {
-    cartId: joi.object({
-        productId: gerenralFields._id,
+    query: joi.object({
+        cartId: gerenralFields._id,
     })   
 }

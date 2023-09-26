@@ -44,6 +44,12 @@ router.get(
   errorHandling(pc.getProducts)
   );
 
+// ==============getProductsWithReviews==========
+router.get(
+  "/getProductsWithReviews",
+  errorHandling(pc.getProductsWithReviews)
+  );
+
 //====================searchProduct=================
 router.get(
   "/searchProduct",

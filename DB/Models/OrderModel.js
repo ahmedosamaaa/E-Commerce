@@ -69,12 +69,13 @@ const orderSchema = new Schema ({
         // required: true,
         enum: [
             'pending',
-            'confirmed',
-            'placed',
-            'preparation',
-            'on way',
             'delivered',
             'canceled',
+            'rejected',
+            'confirmed',
+            'preparation',
+            'placed',
+            'on way',
         ],
     },
 

@@ -23,7 +23,14 @@ export const cartToOrderSchema = {
         paymentMethod: joi.string().valid('card','cash').required(),
     }),
     query: joi.object({
-        cartId: gerenralFields._id,
+        cartId: gerenralFields._id.required(),
+    })    
+    
+}
+//========= orderDelivered ========
+export const orderDeliveredSchema = {
+    query: joi.object({
+        orderId: gerenralFields._id.required(),
     })    
     
 }

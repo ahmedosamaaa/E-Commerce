@@ -66,6 +66,11 @@ const userSchema = new Schema ({
     age: Number,
     token: String,
     forgetCode: String,
+    provider: {
+        type: String,
+        default: 'System',
+        enum: ['System', 'GOOGLE', 'facebook']
+    }
 }, { timestamps: true })
 
 //========hooks======

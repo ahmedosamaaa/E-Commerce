@@ -40,4 +40,9 @@ router.post(
     errorHandling(ac.resetPassword)
 )
 
+//=============socialLogin==============
+router.post(
+    '/loginWithGmail',
+    errorHandling(ac.loginwithGmail)
+)
 export default router
